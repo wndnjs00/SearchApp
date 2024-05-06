@@ -50,15 +50,20 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // viewModel 추가!!
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    // retrofit (이렇게만 추가하고싶으면 version Catalog에도 추가해줘야함)
+    implementation(libs.bundles.retrofit)
 
 
-    // Retrofit, Gson
-    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0") // Gson 컨버터 추가
+      // 아니면 이렇게 써줄수도 있음
+//    // viewModel 추가!!
+//    implementation("androidx.activity:activity-ktx:1.8.2")
+//
+//    // Retrofit, Gson
+//    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+//    implementation ("com.squareup.retrofit2:converter-gson:2.11.0") // Gson 컨버터 추가
+//
+//    // OkHttp
+//    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+//    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // OkHttp
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

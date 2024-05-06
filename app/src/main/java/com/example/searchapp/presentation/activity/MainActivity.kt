@@ -1,12 +1,11 @@
-package com.example.searchapp
+package com.example.searchapp.presentation.activity
 
-import android.media.Image
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.example.searchapp.presentation.fragment.SearchFragment
+import com.example.searchapp.R
+import com.example.searchapp.presentation.fragment.StorageFragment
 import com.example.searchapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun viewPager() {
         val fragmentList = ArrayList<Fragment>().apply {
-            add(ImageSearchFragment())
+            add(SearchFragment())
             add(StorageFragment())
         }
         binding.viewPager.adapter = ViewPagerAdapter(fragmentList, this)
