@@ -1,11 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SearchApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.SearchApp" parent="Theme.AppCompat.Light">
+
+        <item name="colorPrimary">@color/red</item>
+
+        <!--상태바 색변경-->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/red</item>
+        <!--엑션바 없애기-->
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.SearchApp" parent="Base.Theme.SearchApp" />
+
 
 
     <!--tabLayoutStyle 지정-->
