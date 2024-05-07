@@ -23,8 +23,12 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerView
     }
 
     // 아이템 개수리턴
-    override fun getItemCount(): Int {
-        return searchList.size
+    override fun getItemCount(): Int = searchList.size
+
+
+    // 외부에서 어답터에 데이터 배열을 넣어줌
+    fun submitList(searchLists: ArrayList<DocumentResponse>){
+        this.searchList = searchLists
     }
 
 
@@ -40,6 +44,7 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerView
 
             Glide.with(itemView.context)
                 .load(currentItem!!.thumbnailUrl)
+                .placeholder(R.drawable.base_photo_img)
                 .into(binding.cardViewImg)
         }
     }

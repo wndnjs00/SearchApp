@@ -23,10 +23,10 @@ import kotlinx.coroutines.launch
 
 
 class SearchFragment : Fragment() {
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    // searchAdapter 초기화
     private val searchAdapter : SearchAdapter by lazy {
         SearchAdapter(searchList = ArrayList<DocumentResponse>())
     }
@@ -44,12 +44,17 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         initSearchView()
-        setRecyclerView()
+        setRecyclerView(documentList = ArrayList())
 
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("debugSearchData", it.toString())
-        }
+            Log.d("debugSearchData", it.toString())             // 전체 데이터
 
+            Log.d("test_thumbnailUrl", it[0].thumbnailUrl)      // 이미지 url
+            Log.d("test_displaySiteName", it[0].displaySiteName)  // 사이트이름
+            Log.d("test_datetime", it[0].datetime)              // 날짜
+
+            this.searchAdapter.submitList(ArrayList(it))
+        }
 
         return binding.root
     }
@@ -63,12 +68,14 @@ class SearchFragment : Fragment() {
 
 
     // 어뎁터와 리사이클러뷰 연결
-    private fun setRecyclerView(){
+    private fun setRecyclerView(documentList : ArrayList<DocumentResponse>){
 
         with(binding.recyclerViewSearch){
             adapter = searchAdapter   // 리사이클러뷰와 어뎁터 연결
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         }
+
+
     }
 
 
@@ -81,9 +88,9 @@ class SearchFragment : Fragment() {
             // 검색버튼 누를때 호출
             override fun onQueryTextSubmit(query: String?): Boolean {
 
-                // 검색버튼을 눌렀을때 동작
-                if (query != null) {
+                if (query!!.isNotEmpty()) {
                     searchViewModel.getSearchImageList(query)
+
                 }
 
                 return false    // false : 검색 키보드를 내림, return true : 검색 키보드를 내리지 않음
@@ -102,6 +109,7 @@ class SearchFragment : Fragment() {
 
         )
     }
+
 
 }
 
