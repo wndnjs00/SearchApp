@@ -31,6 +31,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/search_close"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/close_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/searchView_et"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/search_btn"
             android:layout_width="wrap_content"

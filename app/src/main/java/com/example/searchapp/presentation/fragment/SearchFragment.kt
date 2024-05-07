@@ -1,5 +1,6 @@
 package com.example.searchapp.presentation.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
@@ -38,20 +39,27 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
         searchBtn()
+        removeText()
 
         // 데이터 업데이트
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
             Log.d("debugSearchData", it.toString())             // 전체 데이터
 
             this.searchAdapter.submitList(ArrayList(it))
+            this.searchAdapter.notifyDataSetChanged()
         }
 
-        return binding.root
     }
-
 
 
     override fun onDestroyView() {
@@ -65,7 +73,7 @@ class SearchFragment : Fragment() {
     private fun setRecyclerView(){
 
         with(binding.recyclerViewSearch){
-            adapter = searchAdapter   // 리사이클러뷰와 어뎁터 연결
+            adapter = searchAdapter
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         }
     }
@@ -73,7 +81,8 @@ class SearchFragment : Fragment() {
 
     private fun searchBtn(){
         binding.searchBtn.setOnClickListener {
-            saveData()
+
+            saveSearchData()
 
             val searchText = binding.searchViewEt.text.toString()
 
@@ -81,11 +90,20 @@ class SearchFragment : Fragment() {
                 searchViewModel.getSearchImageList(searchText)
             }
         }
-        loadData()
+        loadSearchData()
     }
 
 
-    private fun saveData(){
+    private fun removeText(){
+        with(binding){
+            searchClose.setOnClickListener {
+                searchViewEt.setText("")
+            }
+        }
+    }
+
+
+    private fun saveSearchData(){
         // fragment에서는 sharedPreferences 쓸려면 activtiy를 참조해서 써줘야함
         val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences?.edit()
@@ -96,7 +114,7 @@ class SearchFragment : Fragment() {
         edit?.apply()
     }
 
-    private fun loadData(){
+    private fun loadSearchData(){
         val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         // getString을 이용해 데이터를 꺼내서 사용
         // default값 설정해줘야함 -> 데이터가 null일떄(존재하지 않을떄의 값)
