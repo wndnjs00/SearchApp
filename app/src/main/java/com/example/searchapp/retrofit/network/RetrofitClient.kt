@@ -1,5 +1,6 @@
 package com.example.searchapp.retrofit.network
 
+import com.example.searchapp.retrofit.Constants
 import com.example.searchapp.retrofit.SearchRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // 카카오 API base url
-    private const val BASE_URL = "https://dapi.kakao.com/"
+    private const val BASE_URL = Constants.BASE_URL
 
 
     // 네트워크 요청을 위한 httpClient 구성 (okHttpClient - 로깅인터셉터)
