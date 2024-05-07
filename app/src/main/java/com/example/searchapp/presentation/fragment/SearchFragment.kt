@@ -35,10 +35,6 @@ class SearchFragment : Fragment() {
         SearchViewModelFactory()
     }
 
-    private val searchRepository = SearchRepositoryImpl()
-
-
-//    var searchLists = mutableListOf <DocumentResponse>()
 
 
     override fun onCreateView(
@@ -52,8 +48,8 @@ class SearchFragment : Fragment() {
 
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
             Log.d("debugSearchData", it.toString())
-            searchAdapter.searchList
         }
+
 
         return binding.root
     }
@@ -68,7 +64,6 @@ class SearchFragment : Fragment() {
 
     // 어뎁터와 리사이클러뷰 연결
     private fun setRecyclerView(){
-//        searchAdapter.searchList = searchLists as ArrayList<DocumentResponse>
 
         with(binding.recyclerViewSearch){
             adapter = searchAdapter   // 리사이클러뷰와 어뎁터 연결
@@ -86,13 +81,21 @@ class SearchFragment : Fragment() {
             // 검색버튼 누를때 호출
             override fun onQueryTextSubmit(query: String?): Boolean {
 
-                // 동작 적기
+                // 검색버튼을 눌렀을때 동작
+                if (query != null) {
+                    searchViewModel.getSearchImageList(query)
+                }
 
                 return false    // false : 검색 키보드를 내림, return true : 검색 키보드를 내리지 않음
             }
 
             // 검색창에서 글자 변경이 일어날 때마다 호출
             override fun onQueryTextChange(newText: String?): Boolean {
+
+//                if (newText != null) {
+//                    searchViewModel.getSearchImageList(newText)
+//                }
+
                 return true
             }
         }

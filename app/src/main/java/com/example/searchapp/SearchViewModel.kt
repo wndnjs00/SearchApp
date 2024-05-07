@@ -25,7 +25,7 @@ class SearchViewModel(private val remoteDataSource: SearchRemoteDataSource) : Vi
 }
 
 class SearchViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         return SearchViewModel(RetrofitClient.searchRemoteDataSource) as T
     }

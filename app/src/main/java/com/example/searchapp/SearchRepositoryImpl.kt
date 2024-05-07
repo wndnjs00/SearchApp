@@ -10,6 +10,6 @@ class SearchRepositoryImpl : SearchRepository{
         size: Int,
         page: Int
     ): SearchRemoteDataSource {
-        return searchImages(query,sort,size,page)
+        return searchImages(query,sort,size = 80, page = 1)
     }
 }
