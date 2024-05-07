@@ -1,16 +1,13 @@
-package com.example.searchapp
+package com.example.searchapp.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.searchapp.retrofit.SearchRemoteDataSource
-import com.example.searchapp.retrofit.model.DocumentResponse
-import com.example.searchapp.retrofit.model.SearchResponse
-import com.example.searchapp.retrofit.network.RetrofitClient
-import kotlinx.coroutines.Dispatchers
+import com.example.searchapp.data.model.DocumentResponse
+import com.example.searchapp.data.network.RetrofitClient
+import com.example.searchapp.data.remote.SearchRemoteDataSource
 import kotlinx.coroutines.launch
 
 

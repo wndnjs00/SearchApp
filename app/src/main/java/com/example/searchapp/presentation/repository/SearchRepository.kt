@@ -1,6 +1,6 @@
-package com.example.searchapp
+package com.example.searchapp.presentation.repository
 
-import com.example.searchapp.retrofit.SearchRemoteDataSource
+import com.example.searchapp.data.remote.SearchRemoteDataSource
 
 interface SearchRepository {
     suspend fun searchImages(

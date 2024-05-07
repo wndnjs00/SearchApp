@@ -1,6 +1,7 @@
-package com.example.searchapp.retrofit
+package com.example.searchapp.data.remote
 
-import com.example.searchapp.retrofit.model.SearchResponse
+import com.example.searchapp.data.Constants
+import com.example.searchapp.data.model.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

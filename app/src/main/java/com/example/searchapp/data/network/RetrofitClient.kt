@@ -1,7 +1,7 @@
-package com.example.searchapp.retrofit.network
+package com.example.searchapp.data.network
 
-import com.example.searchapp.retrofit.Constants
-import com.example.searchapp.retrofit.SearchRemoteDataSource
+import com.example.searchapp.data.Constants
+import com.example.searchapp.data.remote.SearchRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

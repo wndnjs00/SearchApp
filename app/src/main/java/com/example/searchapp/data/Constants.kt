@@ -1,4 +1,4 @@
-package com.example.searchapp.retrofit
+package com.example.searchapp.data
 
 object Constants {
     const val BASE_URL = "https://dapi.kakao.com/"
