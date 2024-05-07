@@ -1,12 +1,17 @@
 package com.example.searchapp.presentation.fragment
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.searchapp.R
+import com.example.searchapp.data.Dateformat
 import com.example.searchapp.databinding.SearchItemBinding
 import com.example.searchapp.data.model.DocumentResponse
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class SearchAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>(){
@@ -41,7 +46,8 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerView
 
             with(binding){
                 cardViewSiteTv.text = currentItem!!.displaySiteName
-                cardViewDateTv.text = currentItem!!.datetime
+                cardViewDateTv.text = Dateformat.dateformat(currentItem!!.datetime)
+
                 Glide.with(itemView.context)
                     .load(currentItem!!.thumbnailUrl)
                     .placeholder(R.drawable.base_photo_img)
