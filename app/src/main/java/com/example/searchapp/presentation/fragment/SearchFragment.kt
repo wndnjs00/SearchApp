@@ -39,8 +39,8 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        initSearchView()
         setRecyclerView()
+        searchBtn()
 
         // 데이터 업데이트
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
@@ -49,9 +49,9 @@ class SearchFragment : Fragment() {
             this.searchAdapter.submitList(ArrayList(it))
         }
 
-
         return binding.root
     }
+
 
 
     override fun onDestroyView() {
@@ -71,54 +71,41 @@ class SearchFragment : Fragment() {
     }
 
 
-    // searchView 동작이벤트함수
-    private fun initSearchView() {
+    private fun searchBtn(){
+        binding.searchBtn.setOnClickListener {
+            saveData()
 
-        binding.searchView.isSubmitButtonEnabled = true
+            val searchText = binding.searchViewEt.text.toString()
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            // 검색버튼 누를때 호출
-            override fun onQueryTextSubmit(query: String?): Boolean {
-
-                if (query!!.isNotEmpty()) {
-                    searchViewModel.getSearchImageList(query)
-                }
-
-                sharedSave()
-
-                return false    // false : 검색 키보드를 내림, return true : 검색 키보드를 내리지 않음
-            }
-
-            // 검색창에서 글자 변경이 일어날 때마다 호출
-            override fun onQueryTextChange(newText: String?): Boolean {
-
-                return true
+            if (searchText.isNotEmpty()) {
+                searchViewModel.getSearchImageList(searchText)
             }
         }
-        )
+        loadData()
     }
 
 
-    private fun sharedSave() {
+    private fun saveData(){
         // fragment에서는 sharedPreferences 쓸려면 activtiy를 참조해서 써줘야함
-        val sharedPreferences = activity?.getSharedPreferences("searchText", Context.MODE_PRIVATE)
+        val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences?.edit()
-        val searchData = binding.searchView.setQuery(binding.searchView.query, false).toString()
+        val searchData = binding.searchViewEt.text.toString()
 
         // 데이터 저장
         edit?.putString("searchData", searchData)
         edit?.apply()
     }
 
-
-    fun sharedLoad(){
-        val sharedPreferences = activity?.getSharedPreferences("searchText", Context.MODE_PRIVATE)
-        // default값 설정해줘야함 -> 데이터가 null일떄(존재하지 않을떄의 값)
+    private fun loadData(){
+        val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         // getString을 이용해 데이터를 꺼내서 사용
+        // default값 설정해줘야함 -> 데이터가 null일떄(존재하지 않을떄의 값)
         val searchData = sharedPreferences?.getString("searchData", null)
 
-        binding.searchView.setQuery(searchData, false)
+        binding.searchViewEt.setText(searchData)
     }
+
+
 }
 
 
