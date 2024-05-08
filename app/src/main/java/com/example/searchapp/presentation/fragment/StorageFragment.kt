@@ -44,22 +44,7 @@ class StorageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
-
-        // 로그 테스트
-       val loadData = loadPrefsStorageItmes()
-
-        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
-        storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
-            Log.d("itData", it.toString())         // 전체 데이터
-
-            // 데이터 업데이트
-            this.storageAdapter.submitList(ArrayList(it))
-//            this.storageAdapter.notifyDataSetChanged()
-        }
-
-        storageViewModel.getStorageImageList(loadData)
-        Log.d("loadData",loadData.toString())
-
+        updateData()
     }
 
 
@@ -88,10 +73,24 @@ class StorageFragment : Fragment() {
         val storageData = pref?.getString("STORAGE_ITEMS", null)
 
         // Json을 DocumentResponse 객체로 변환
-        val a= Gson().fromJson(storageData, object : TypeToken<List<DocumentResponse>>() {})
-        return a
-
-        Log.d("storageData",storageData.toString())
+        val ListData= Gson().fromJson(storageData, object : TypeToken<List<DocumentResponse>>() {})
+        return ListData
     }
 
+
+    private fun updateData(){
+        val loadData = loadPrefsStorageItmes()
+
+        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
+        storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
+            Log.d("itData", it.toString())         // 전체 데이터
+
+            // 데이터 업데이트
+            this.storageAdapter.submitList(ArrayList(it))
+            this.storageAdapter.notifyDataSetChanged()
+        }
+
+        storageViewModel.getStorageImageList(loadData)
+        Log.d("loadData",loadData.toString())   // 이부분 질문!!
+    }
 }

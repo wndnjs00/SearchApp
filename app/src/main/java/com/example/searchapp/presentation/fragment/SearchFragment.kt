@@ -145,9 +145,6 @@ class SearchFragment : Fragment() {
 
         getPrefsStorageItems(documentResponse)
 
-        // 선택한 아이템의 위치 (postion값)
-//        Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
-//        Log.d("postion_click", position.toString())
     }
 
 
