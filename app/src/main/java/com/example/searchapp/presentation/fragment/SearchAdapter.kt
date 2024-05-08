@@ -1,5 +1,6 @@
 package com.example.searchapp.presentation.fragment
 
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,15 +12,17 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.searchapp.R
+import com.example.searchapp.data.Constants
 import com.example.searchapp.data.Dateformat
 import com.example.searchapp.databinding.SearchItemBinding
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.data.model.SearchResponse
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val onClick : (DocumentResponse) -> Unit) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>(){
+class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val onClick : (DocumentResponse, Int) -> Unit) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>(){
 
 
     // 레이아웃 연결
@@ -33,7 +36,7 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
         holder.bind(searchList[position])
 
         holder.itemView.setOnClickListener {
-            onClick
+            onClick(searchList[position], position)
         }
     }
 
@@ -73,10 +76,13 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                         cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
                         currentItem!!.isLike = false
                     }
+                    Log.d("bookmark_click", currentItem!!.isLike.toString())
                 }
 
             }
         }
     }
+
+
 }
 

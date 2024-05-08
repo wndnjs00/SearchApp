@@ -13,8 +13,8 @@ class StorageFragment : Fragment() {
     private var _binding : FragmentStorageBinding? = null
     private val binding get() = _binding!!
 
-    private val storageAdapter : StorageAdpater by lazy {
-        StorageAdpater(searchList = ArrayList())
+    private val storageAdapter : StorageAdapter by lazy {
+        StorageAdapter(searchList = ArrayList())
     }
 
 
@@ -46,7 +46,7 @@ class StorageFragment : Fragment() {
 
         with(binding.recyclerViewStorage){
             adapter = storageAdapter
-            layoutManager = GridLayoutManager(requireContext(), 2, androidx.recyclerview.widget.GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }
 
