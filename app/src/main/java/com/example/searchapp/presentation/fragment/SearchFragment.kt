@@ -1,9 +1,8 @@
 package com.example.searchapp.presentation.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,20 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.searchapp.data.Constants
 import com.example.searchapp.data.model.DocumentResponse
-import com.example.searchapp.data.model.SearchResponse
 import com.example.searchapp.presentation.viewmodel.SearchViewModel
 import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
 import com.example.searchapp.databinding.FragmentSearchBinding
-import com.example.searchapp.presentation.viewmodel.StorageViewModel
-import com.example.searchapp.presentation.viewmodel.StorageViewModelFactory
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 
 class SearchFragment : Fragment() {
@@ -36,20 +28,12 @@ class SearchFragment : Fragment() {
     private val searchAdapter : SearchAdapter by lazy {
         SearchAdapter(searchList = ArrayList()){ search, postition ->
             // 클릭 시
-            adapterClick(search,postition)
+            adapterClick(listOf(search),postition)
         }
-    }
-
-    private val storageAdapter : StorageAdapter by lazy {
-        StorageAdapter(searchList = ArrayList())
     }
 
     private val searchViewModel by viewModels<SearchViewModel> {
         SearchViewModelFactory()
-    }
-
-    private val storageViewModel by viewModels<StorageViewModel> {
-        StorageViewModelFactory()
     }
 
 
@@ -78,12 +62,6 @@ class SearchFragment : Fragment() {
             // 데이터 업데이트
             this.searchAdapter.submitList(ArrayList(it))
             this.searchAdapter.notifyDataSetChanged()
-        }
-
-        storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
-            Log.d("storageData", it.toString())
-            this.storageAdapter.submitList(ArrayList(it))
-            this.storageAdapter.notifyDataSetChanged()
         }
 
     }
@@ -161,59 +139,28 @@ class SearchFragment : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+
     // 리사이클러뷰 아이템 클릭 이벤트
-    private fun adapterClick(documentResponse: DocumentResponse, position : Int){
+    private fun adapterClick(documentResponse: List<DocumentResponse>, position : Int){
 
-        // 선택한 아이템의 postion값
-        Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
-        Log.d("click_position", position.toString())
+        getPrefsStorageItems(documentResponse)
 
+        // 선택한 아이템의 위치 (postion값)
+//        Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
+//        Log.d("postion_click", position.toString())
     }
 
 
+    // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
+    private fun getPrefsStorageItems(documentResponse: List<DocumentResponse>){
+        val pref = activity?.getSharedPreferences("favorite_prefs", 0)
+        val edit = pref?.edit()
+        val jsonString = Gson().toJson(documentResponse)
+        Log.d("jsonString",jsonString)  //데이터들 값이 저장됨
 
-
-
-
-
-
-
-//    // 저장돠어있는 아이템 리스트 목록을 가져오는 함수
-//    private fun getPrefsStorageItems() : List<DocumentResponse>{
-//        val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
-//        val joinString = sharedPreferences?.getString("get_items", "")
-//        return if (joinString!!.isNotEmpty()){
-//            emptyList()
-//        }else{
-//            Gson().fromJson(joinString, object : TypeToken<List<DocumentResponse>>() {}.type)
-//        }
-//    }
-//
-//
-//    // 이미지 클릭하면 저장소에 추가하기위한 함수
-//    private fun saveStorageItem(documentResponse: DocumentResponse){
-//        val bookmarkItems = getPrefsStorageItems().toMutableList()
-//        val findItem = bookmarkItems.find { it == documentResponse }
-//
-//        if (findItem == null){
-//            bookmarkItems.add(documentResponse)
-//            savePrefsStorageItems(bookmarkItems)
-//        }
-//    }
-//
-//     // SearchModel 객체 아이템을 Json 문자열로 변환한 후 저장
-//    private fun savePrefsStorageItems(items: List<DocumentResponse>) {
-//        val jsonString = Gson().toJson(items)
-//        val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
-//        sharedPreferences?.edit()?.putString("get_items", jsonString)?.apply()
-//    }
-//
-//     suspend fun getStorageItems(): List<DocumentResponse> {
-//        return getPrefsStorageItems()
-//    }
-
-
-
+        edit?.putString("STORAGE_ITEMS", jsonString)
+        edit?.apply()
+    }
 
 
 }

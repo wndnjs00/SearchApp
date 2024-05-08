@@ -15,9 +15,10 @@ class StorageViewModel(private val remoteDataSource: SearchRemoteDataSource) : V
     private val _getStorageLiveData : MutableLiveData<List<DocumentResponse>> = MutableLiveData()
     val getStorageLiveData : LiveData<List<DocumentResponse>> get() = _getStorageLiveData
 
-    fun getStorageImageList(query : String) = viewModelScope.launch {
-        _getStorageLiveData.value = remoteDataSource.getSearch(query).searchDocuments
+    fun getStorageImageList(qery: String) = viewModelScope.launch{
+        _getStorageLiveData.value = remoteDataSource.getSearch(qery).searchDocuments
     }
+
 }
 
 class StorageViewModelFactory : ViewModelProvider.Factory{
