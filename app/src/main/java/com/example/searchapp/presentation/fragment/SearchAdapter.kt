@@ -71,6 +71,7 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                         currentItem!!.isLike = true     //클릭됐으니깐 true로 바꿔주기
                     }else{
                         cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
+                        currentItem!!.isLike = false
                     }
                 }
 
