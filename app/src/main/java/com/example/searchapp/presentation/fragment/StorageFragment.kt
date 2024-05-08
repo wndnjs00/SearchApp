@@ -1,6 +1,6 @@
 package com.example.searchapp.presentation.fragment
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,11 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.databinding.FragmentStorageBinding
-import com.example.searchapp.presentation.viewmodel.SearchViewModel
-import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
 import com.example.searchapp.presentation.viewmodel.StorageViewModel
 import com.example.searchapp.presentation.viewmodel.StorageViewModelFactory
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class StorageFragment : Fragment() {
@@ -40,13 +39,27 @@ class StorageFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
 
         // 로그 테스트
-//        loadPrefsStorageItmes()
+       val loadData = loadPrefsStorageItmes()
+
+        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
+        storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
+            Log.d("itData", it.toString())         // 전체 데이터
+
+            // 데이터 업데이트
+            this.storageAdapter.submitList(ArrayList(it))
+//            this.storageAdapter.notifyDataSetChanged()
+        }
+
+        storageViewModel.getStorageImageList(loadData)
+        Log.d("loadData",loadData.toString())
+
     }
 
 
@@ -68,11 +81,15 @@ class StorageFragment : Fragment() {
     }
 
 
-    // searchFragment에 저장한리스트값 불러오기
-    private fun loadPrefsStorageItmes(){
+    // searchFragment에 저장한 클릭 리스트값 불러오기
+    private fun loadPrefsStorageItmes() : List<DocumentResponse>{
         val pref = activity?.getSharedPreferences("favorite_prefs",0)
         // 보관함에 저장되어있는 아이템
         val storageData = pref?.getString("STORAGE_ITEMS", null)
+
+        // Json을 DocumentResponse 객체로 변환
+        val a= Gson().fromJson(storageData, object : TypeToken<List<DocumentResponse>>() {})
+        return a
 
         Log.d("storageData",storageData.toString())
     }

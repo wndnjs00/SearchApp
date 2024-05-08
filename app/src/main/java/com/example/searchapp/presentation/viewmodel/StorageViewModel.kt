@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.data.network.RetrofitClient
 import com.example.searchapp.data.remote.SearchRemoteDataSource
+import com.example.searchapp.presentation.fragment.StorageFragment
 import kotlinx.coroutines.launch
 
 class StorageViewModel(private val remoteDataSource: SearchRemoteDataSource) : ViewModel() {
@@ -15,8 +16,9 @@ class StorageViewModel(private val remoteDataSource: SearchRemoteDataSource) : V
     private val _getStorageLiveData : MutableLiveData<List<DocumentResponse>> = MutableLiveData()
     val getStorageLiveData : LiveData<List<DocumentResponse>> get() = _getStorageLiveData
 
-    fun getStorageImageList(qery: String) = viewModelScope.launch{
-        _getStorageLiveData.value = remoteDataSource.getSearch(qery).searchDocuments
+    fun getStorageImageList(dataList : List<DocumentResponse>) = viewModelScope.launch{
+
+        _getStorageLiveData.value = dataList
     }
 
 }
