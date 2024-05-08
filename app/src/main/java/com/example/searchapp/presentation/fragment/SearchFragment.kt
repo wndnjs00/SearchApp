@@ -25,7 +25,10 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val searchAdapter : SearchAdapter by lazy {
-        SearchAdapter(searchList = ArrayList())
+        SearchAdapter(searchList = ArrayList()){
+            // 클릭 시 이동
+            adapterClick()
+        }
     }
 
     private val searchViewModel by viewModels<SearchViewModel> {
@@ -51,10 +54,11 @@ class SearchFragment : Fragment() {
         searchBtn()
         removeText()
 
-        // 데이터 업데이트
+        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("debugSearchData", it.toString())             // 전체 데이터
+            Log.d("debugSearchData", it.toString())         // 전체 데이터
 
+            // 데이터 업데이트
             this.searchAdapter.submitList(ArrayList(it))
             this.searchAdapter.notifyDataSetChanged()
         }
@@ -80,16 +84,17 @@ class SearchFragment : Fragment() {
 
 
     private fun searchBtn(){
-        binding.searchBtn.setOnClickListener {
 
+        binding.searchBtn.setOnClickListener {
             saveSearchData()
 
             val searchText = binding.searchViewEt.text.toString()
-
             if (searchText.isNotEmpty()) {
+                // viewModel에 작성한 텍스트값 전달
                 searchViewModel.getSearchImageList(searchText)
             }
         }
+
         loadSearchData()
     }
 
@@ -109,7 +114,6 @@ class SearchFragment : Fragment() {
         val edit = sharedPreferences?.edit()
         val searchData = binding.searchViewEt.text.toString()
 
-        // 데이터 저장
         edit?.putString("searchData", searchData)
         edit?.apply()
     }
@@ -123,6 +127,11 @@ class SearchFragment : Fragment() {
         binding.searchViewEt.setText(searchData)
     }
 
+
+    // 리사이클러뷰 아이템 클릭 이벤트
+    private fun adapterClick(){
+
+    }
 
 }
 

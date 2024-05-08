@@ -5,12 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.searchapp.databinding.FragmentStorageBinding
 
 
 class StorageFragment : Fragment() {
     private var _binding : FragmentStorageBinding? = null
     private val binding get() = _binding!!
+
+    private val storageAdapter : StorageAdpater by lazy {
+        StorageAdpater(searchList = ArrayList())
+    }
 
 
     override fun onCreateView(
@@ -22,9 +27,27 @@ class StorageFragment : Fragment() {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setRecyclerView()
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+
+    // 어뎁터와 리사이클러뷰 연결
+    private fun setRecyclerView(){
+
+        with(binding.recyclerViewStorage){
+            adapter = storageAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2, androidx.recyclerview.widget.GridLayoutManager.VERTICAL, false)
+        }
     }
 
 }
