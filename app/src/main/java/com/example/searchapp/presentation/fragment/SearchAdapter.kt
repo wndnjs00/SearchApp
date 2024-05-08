@@ -63,21 +63,19 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                     .placeholder(R.drawable.base_photo_img)
                     .into(cardViewImg)
 
-
-
-                binding.cardViewBookmarkImg.setOnClickListener {
+                // 빈북마크 클릭시
+                cardViewBookmarkImg.setOnClickListener {
 
                     if(currentItem!!.isLike == false){
-                        binding.cardViewBookmarkImg.setImageResource(R.drawable.bookmark_full_img)
-                        currentItem!!.isLike = true
+                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_full_img)
+                        currentItem!!.isLike = true     //클릭됐으니깐 true로 바꿔주기
                     }else{
-                        binding.cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
+                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
                     }
                 }
 
-
-                }
             }
         }
     }
+}
 
