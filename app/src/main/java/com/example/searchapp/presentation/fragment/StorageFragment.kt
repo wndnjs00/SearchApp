@@ -1,6 +1,7 @@
 package com.example.searchapp.presentation.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -68,7 +69,7 @@ class StorageFragment : Fragment() {
 
     // searchFragment에 저장한 클릭 리스트값 불러오기
     private fun loadPrefsStorageItmes() : DocumentResponse{
-        val pref = activity?.getSharedPreferences("favorite_prefs",0)
+        val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
         // 보관함에 저장되어있는 아이템
         val storageData = pref?.getString("STORAGE_ITEMS", null)
         Log.d("storageData", storageData.toString())    // 이부분 질문!
@@ -80,7 +81,6 @@ class StorageFragment : Fragment() {
 
 
     private fun updateData(){
-        val loadData = loadPrefsStorageItmes()
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
@@ -91,6 +91,7 @@ class StorageFragment : Fragment() {
             this.storageAdapter.notifyDataSetChanged()
         }
 
+        val loadData = loadPrefsStorageItmes()
         storageViewModel.getStorageImageList(loadData)
     }
 }
