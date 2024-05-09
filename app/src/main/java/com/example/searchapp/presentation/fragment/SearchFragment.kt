@@ -148,6 +148,7 @@ class SearchFragment : Fragment() {
     }
 
 
+    // room으로 바꾸기
     // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
     private fun getPrefsStorageItems(documentResponse: DocumentResponse){
         val pref = activity?.getSharedPreferences("favorite_prefs", 0)
