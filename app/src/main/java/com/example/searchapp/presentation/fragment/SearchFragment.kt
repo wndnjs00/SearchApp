@@ -14,10 +14,17 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.searchapp.data.model.DocumentResponse
+import com.example.searchapp.data.room.MyDao
+import com.example.searchapp.data.room.MyDataBase
+import com.example.searchapp.data.room.MyEntity
 import com.example.searchapp.presentation.viewmodel.SearchViewModel
 import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
 import com.example.searchapp.databinding.FragmentSearchBinding
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class SearchFragment : Fragment() {
@@ -109,7 +116,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-
     private fun saveSearchData(){
         // fragment에서는 sharedPreferences 쓸려면 activtiy를 참조해서 써줘야함
         val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
@@ -143,21 +149,21 @@ class SearchFragment : Fragment() {
     // 리사이클러뷰 아이템 클릭 이벤트
     private fun adapterClick(documentResponse: DocumentResponse, position : Int){
 
-        getPrefsStorageItems(documentResponse)
-
     }
+
 
 
     // room으로 바꾸기
     // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
-    private fun getPrefsStorageItems(documentResponse: DocumentResponse){
-        val pref = activity?.getSharedPreferences("favorite_prefs", 0)
-        val edit = pref?.edit()
-        val jsonString = Gson().toJson(documentResponse)
-        Log.d("jsonString",jsonString)  //데이터들 값이 저장됨
+    private fun getPrefsStorageItems(){
+//        val pref = activity?.getSharedPreferences("favorite_prefs", 0)
+//        val edit = pref?.edit()
+//        val jsonString = Gson().toJson(documentResponse)
+//        Log.d("jsonString",jsonString)  //데이터들 값이 저장됨
+//
+//        edit?.putString("STORAGE_ITEMS", jsonString)
+//        edit?.apply()
 
-        edit?.putString("STORAGE_ITEMS", jsonString)
-        edit?.apply()
     }
 
 
