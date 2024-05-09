@@ -57,10 +57,11 @@ class SearchFragment : Fragment() {
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("debugSearchData", it.toString())         // 전체 데이터
+            Log.d("apple", it.toString())         // 전체 데이터
 
             // 데이터 업데이트
-            this.searchAdapter.submitList(ArrayList(it))
+//            this.searchAdapter.submitList(ArrayList(it))
+            this.searchAdapter.submitList(it as ArrayList)
             this.searchAdapter.notifyDataSetChanged()
         }
 
