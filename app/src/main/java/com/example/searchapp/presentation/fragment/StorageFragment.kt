@@ -66,21 +66,8 @@ class StorageFragment : Fragment() {
     }
 
 
-    // searchFragment에 저장한 클릭 리스트값 불러오기
-    private fun loadPrefsStorageItmes() : DocumentResponse{
-        val pref = activity?.getSharedPreferences("favorite_prefs",0)
-        // 보관함에 저장되어있는 아이템
-        val storageData = pref?.getString("STORAGE_ITEMS", null)
-        Log.d("storageData", storageData.toString())    // 이부분 질문!
-
-        // Json을 DocumentResponse 객체로 변환
-        val ListData= Gson().fromJson(storageData, DocumentResponse::class.java)
-        return ListData
-    }
-
 
     private fun updateData(){
-        val loadData = loadPrefsStorageItmes()
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
@@ -91,6 +78,5 @@ class StorageFragment : Fragment() {
             this.storageAdapter.notifyDataSetChanged()
         }
 
-        storageViewModel.getStorageImageList(loadData)
     }
 }

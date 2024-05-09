@@ -153,20 +153,6 @@ class SearchFragment : Fragment() {
 
 
 
-    // room으로 바꾸기
-    // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
-    private fun getPrefsStorageItems(){
-//        val pref = activity?.getSharedPreferences("favorite_prefs", 0)
-//        val edit = pref?.edit()
-//        val jsonString = Gson().toJson(documentResponse)
-//        Log.d("jsonString",jsonString)  //데이터들 값이 저장됨
-//
-//        edit?.putString("STORAGE_ITEMS", jsonString)
-//        edit?.apply()
-
-    }
-
-
 }
 
 
