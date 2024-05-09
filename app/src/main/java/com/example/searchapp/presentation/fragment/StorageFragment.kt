@@ -67,13 +67,14 @@ class StorageFragment : Fragment() {
 
 
     // searchFragment에 저장한 클릭 리스트값 불러오기
-    private fun loadPrefsStorageItmes() : List<DocumentResponse>{
+    private fun loadPrefsStorageItmes() : DocumentResponse{
         val pref = activity?.getSharedPreferences("favorite_prefs",0)
         // 보관함에 저장되어있는 아이템
         val storageData = pref?.getString("STORAGE_ITEMS", null)
+        Log.d("storageData", storageData.toString())    // 이부분 질문!
 
         // Json을 DocumentResponse 객체로 변환
-        val ListData= Gson().fromJson(storageData, object : TypeToken<List<DocumentResponse>>() {})
+        val ListData= Gson().fromJson(storageData, DocumentResponse::class.java)
         return ListData
     }
 
@@ -91,6 +92,5 @@ class StorageFragment : Fragment() {
         }
 
         storageViewModel.getStorageImageList(loadData)
-        Log.d("loadData",loadData.toString())   // 이부분 질문!!
     }
 }

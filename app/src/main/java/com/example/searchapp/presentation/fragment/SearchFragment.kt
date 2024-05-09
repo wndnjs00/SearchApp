@@ -28,7 +28,7 @@ class SearchFragment : Fragment() {
     private val searchAdapter : SearchAdapter by lazy {
         SearchAdapter(searchList = ArrayList()){ search, postition ->
             // 클릭 시
-            adapterClick(listOf(search),postition)
+            adapterClick(search,postition)
         }
     }
 
@@ -141,7 +141,7 @@ class SearchFragment : Fragment() {
 
 
     // 리사이클러뷰 아이템 클릭 이벤트
-    private fun adapterClick(documentResponse: List<DocumentResponse>, position : Int){
+    private fun adapterClick(documentResponse: DocumentResponse, position : Int){
 
         getPrefsStorageItems(documentResponse)
 
@@ -149,7 +149,7 @@ class SearchFragment : Fragment() {
 
 
     // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
-    private fun getPrefsStorageItems(documentResponse: List<DocumentResponse>){
+    private fun getPrefsStorageItems(documentResponse: DocumentResponse){
         val pref = activity?.getSharedPreferences("favorite_prefs", 0)
         val edit = pref?.edit()
         val jsonString = Gson().toJson(documentResponse)
