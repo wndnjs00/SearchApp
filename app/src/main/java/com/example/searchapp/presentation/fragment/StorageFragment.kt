@@ -72,7 +72,7 @@ class StorageFragment : Fragment() {
         val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
         // 보관함에 저장되어있는 아이템
         val storageData = pref?.getString("STORAGE_ITEMS", null)
-        Log.d("storageData", storageData.toString())    // 이부분 질문!
+        Log.d("storageData", storageData.toString())
 
         // Json을 DocumentResponse 객체로 변환
         val ListData= Gson().fromJson(storageData, DocumentResponse::class.java)
@@ -84,7 +84,7 @@ class StorageFragment : Fragment() {
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
-            Log.d("itData", it.toString())         // 전체 데이터
+            Log.d("itData", it.toString())
 
             // 데이터 업데이트
             this.storageAdapter.submitList(ArrayList(it))
@@ -92,6 +92,6 @@ class StorageFragment : Fragment() {
         }
 
         val loadData = loadPrefsStorageItmes()
-        storageViewModel.getStorageImageList(loadData)
+        storageViewModel.getStorageImageList(arrayListOf(loadData))
     }
 }

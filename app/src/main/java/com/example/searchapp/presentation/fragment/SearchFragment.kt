@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.searchapp.R
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.presentation.viewmodel.SearchViewModel
 import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
@@ -60,7 +61,6 @@ class SearchFragment : Fragment() {
             Log.d("apple", it.toString())         // 전체 데이터
 
             // 데이터 업데이트
-//            this.searchAdapter.submitList(ArrayList(it))
             this.searchAdapter.submitList(it as ArrayList)
             this.searchAdapter.notifyDataSetChanged()
         }
@@ -154,7 +154,7 @@ class SearchFragment : Fragment() {
         val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
         val edit = pref?.edit()
         val jsonString = Gson().toJson(documentResponse)
-        Log.d("jsonString",jsonString)  //데이터들 값이 저장됨
+        Log.d("jsonString",jsonString)
 
         edit?.putString("STORAGE_ITEMS", jsonString)
         edit?.apply()
