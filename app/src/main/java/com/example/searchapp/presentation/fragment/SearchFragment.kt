@@ -18,7 +18,9 @@ import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.presentation.viewmodel.SearchViewModel
 import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
 import com.example.searchapp.databinding.FragmentSearchBinding
+import com.example.searchapp.presentation.main.MainActivity
 import com.google.gson.Gson
+import okhttp3.internal.notify
 
 
 class SearchFragment : Fragment() {
@@ -27,9 +29,9 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val searchAdapter : SearchAdapter by lazy {
-        SearchAdapter(searchList = ArrayList()){ search, postition ->
+        SearchAdapter(searchList = ArrayList()){ search, position ->
             // 클릭 시
-            adapterClick(search,postition)
+            adapterClick(search,position)
         }
     }
 
@@ -54,27 +56,13 @@ class SearchFragment : Fragment() {
         setRecyclerView()
         searchBtn()
         removeText()
-        dataUpdate()
+        loadSearchData()    // 검색어 텍스트 불러와서 표시
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun dataUpdate(){
-
-        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
-        searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("it_data", it.toString())         // 전체 데이터
-
-            // 데이터 업데이트
-            this.searchAdapter.submitList(it as ArrayList)
-            this.searchAdapter.notifyDataSetChanged()
-        }
     }
 
 
@@ -91,8 +79,8 @@ class SearchFragment : Fragment() {
     private fun searchBtn(){
 
         binding.searchBtn.setOnClickListener {
-            saveSearchData()
-            hideKeyboard()
+            saveSearchData()    // 검색어 텍스트 저장
+            hideKeyboard()      // 키보드 숨김
 
             val searchText = binding.searchViewEt.text.toString()
             if (searchText.isNotEmpty()) {
@@ -101,7 +89,16 @@ class SearchFragment : Fragment() {
             }
         }
 
-        loadSearchData()
+        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
+        searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
+            Log.d("it_data", it.toString())         // 전체 데이터
+
+            // 데이터 업데이트
+            searchAdapter.clearItem()   // 업데이트 하기전에 클리어 먼저해주자
+            this.searchAdapter.submitList(it as ArrayList)
+            this.searchAdapter.notifyDataSetChanged()
+        }
+
     }
 
 
@@ -114,6 +111,7 @@ class SearchFragment : Fragment() {
     }
 
 
+    // 검색어 텍스트 저장
     private fun saveSearchData(){
         // fragment에서는 sharedPreferences 쓸려면 activtiy를 참조해서 써줘야함
         val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
@@ -124,6 +122,7 @@ class SearchFragment : Fragment() {
         edit?.apply()
     }
 
+    // 검색어 텍스트 불러와서 표시
     private fun loadSearchData(){
         val sharedPreferences = activity?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         // getString을 이용해 데이터를 꺼내서 사용
@@ -132,8 +131,6 @@ class SearchFragment : Fragment() {
 
         binding.searchViewEt.setText(searchData)
     }
-
-
 
 
     // 키보드 숨기는 함수
@@ -147,21 +144,21 @@ class SearchFragment : Fragment() {
     // 리사이클러뷰 아이템 클릭 이벤트
     private fun adapterClick(documentResponse: DocumentResponse, position : Int){
 
-        getPrefsStorageItems(documentResponse)
+        val item = searchAdapter.searchList[position]
 
-    }
+        // isLike 뒤집기 (isLike가 true면 false로, false면 ture로)
+        item.isLike = !item.isLike
 
+        if (item.isLike){
+            // MainActivity에 있는 클릭한 아이템 추가
+            (activity as MainActivity).addLikeItem(item)
+        }else{
+            // 한번 더 클릭된다면, 클릭한 아이템 삭제
+            (activity as MainActivity).removeLikeItem(item)
+        }
 
-    // 수정하기
-    // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
-    private fun getPrefsStorageItems(documentResponse: DocumentResponse){
-        val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
-        val edit = pref?.edit()
-        val jsonString = Gson().toJson(documentResponse)
-        Log.d("jsonString",jsonString)
-
-        edit?.putString("STORAGE_ITEMS", jsonString)
-        edit?.apply()
+        // 아이템 업데이트
+        searchAdapter.notifyItemChanged(position)
     }
 
 

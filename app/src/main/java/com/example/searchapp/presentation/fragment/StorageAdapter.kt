@@ -10,7 +10,7 @@ import com.example.searchapp.databinding.SearchItemBinding
 import com.example.searchapp.data.model.DocumentResponse
 
 
-class StorageAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerView.Adapter<StorageAdapter.StorageViewHolder>(){
+class StorageAdapter(var searchList : ArrayList<DocumentResponse>, private val onClick : (DocumentResponse, Int) -> Unit) : RecyclerView.Adapter<StorageAdapter.StorageViewHolder>(){
 
     // 레이아웃 연결
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageViewHolder {
@@ -21,6 +21,10 @@ class StorageAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerVie
     // 데이터 연결
     override fun onBindViewHolder(holder: StorageViewHolder, position: Int) {
         holder.bind(searchList[position])
+
+        holder.itemView.setOnClickListener {
+            onClick(searchList[position], position)
+        }
     }
 
 
@@ -51,6 +55,12 @@ class StorageAdapter(var searchList : ArrayList<DocumentResponse>) : RecyclerVie
                     .into(cardViewImg)
             }
         }
+    }
+
+    fun updateData(newData: List<DocumentResponse>) {
+        searchList.clear()
+        searchList.addAll(newData)
+        notifyDataSetChanged()
     }
 
 
