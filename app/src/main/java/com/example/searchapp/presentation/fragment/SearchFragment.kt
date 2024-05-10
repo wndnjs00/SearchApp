@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("apple", it.toString())         // 전체 데이터
+            Log.d("it_data", it.toString())         // 전체 데이터
 
             // 데이터 업데이트
             this.searchAdapter.submitList(it as ArrayList)
@@ -149,6 +149,7 @@ class SearchFragment : Fragment() {
     }
 
 
+    // 수정하기
     // documentResponse 객체 아이템을 Json 문자열로 변환한 후 SharedPreferences로 저장
     private fun getPrefsStorageItems(documentResponse: DocumentResponse){
         val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)

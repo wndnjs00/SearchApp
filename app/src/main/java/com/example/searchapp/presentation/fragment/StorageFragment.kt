@@ -67,6 +67,7 @@ class StorageFragment : Fragment() {
     }
 
 
+    // 수정하기
     // searchFragment에 저장한 클릭 리스트값 불러오기
     private fun loadPrefsStorageItmes() : DocumentResponse{
         val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
@@ -80,6 +81,7 @@ class StorageFragment : Fragment() {
     }
 
 
+    // 수정하기
     private fun updateData(){
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
