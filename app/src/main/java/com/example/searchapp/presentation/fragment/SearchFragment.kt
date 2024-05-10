@@ -55,6 +55,17 @@ class SearchFragment : Fragment() {
         setRecyclerView()
         searchBtn()
         removeText()
+        dataUpdate()
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+    private fun dataUpdate(){
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
@@ -64,15 +75,7 @@ class SearchFragment : Fragment() {
             this.searchAdapter.submitList(it as ArrayList)
             this.searchAdapter.notifyDataSetChanged()
         }
-
     }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 
 
     // 어뎁터와 리사이클러뷰 연결
