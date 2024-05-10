@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.databinding.FragmentStorageBinding
+import com.example.searchapp.presentation.main.MainActivity
 import com.example.searchapp.presentation.viewmodel.StorageViewModel
 import com.example.searchapp.presentation.viewmodel.StorageViewModelFactory
 import com.google.gson.Gson
@@ -23,12 +26,14 @@ class StorageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val storageAdapter : StorageAdapter by lazy {
-        StorageAdapter(searchList = ArrayList())
+        StorageAdapter(searchList = ArrayList()){ search, position ->
+            adapterClick(position)
+        }
     }
 
-    private val storageViewModel by viewModels<StorageViewModel> {
-        StorageViewModelFactory()
-    }
+
+    // 사용자의 좋아요를 받은 항목을 저장하는 빈리스트
+    private var likeItem : List<DocumentResponse> = listOf()
 
 
     override fun onCreateView(
@@ -45,16 +50,19 @@ class StorageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
-        updateData()
+
+        // MainActivity로부터 좋아요받은 항목을 가져옴
+        likeItem = (activity as MainActivity).likedItems
+        Log.d("likeItems" , likeItem.size.toString())   // 잘 가져옴
+
+        // 좋아요 받은 아이템 넣어서 업데이트
+        storageAdapter.updateData(likeItem)
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
 
     // 어뎁터와 리사이클러뷰 연결
@@ -67,33 +75,14 @@ class StorageFragment : Fragment() {
     }
 
 
-    // 수정하기
-    // searchFragment에 저장한 클릭 리스트값 불러오기
-    private fun loadPrefsStorageItmes() : DocumentResponse{
-        val pref = activity?.getSharedPreferences("favorite_prefs", Context.MODE_PRIVATE)
-        // 보관함에 저장되어있는 아이템
-        val storageData = pref?.getString("STORAGE_ITEMS", null)
-        Log.d("storageData", storageData.toString())
+    private fun adapterClick(position : Int){
 
-        // Json을 DocumentResponse 객체로 변환
-        val ListData= Gson().fromJson(storageData, DocumentResponse::class.java)
-        return ListData
+        Toast.makeText(requireContext(), "클릭함요", Toast.LENGTH_SHORT).show()
+        Log.d("positions", position.toString())
+
+        storageAdapter.searchList.removeAt(position)
+        storageAdapter.notifyItemRemoved(position)
+
     }
 
-
-    // 수정하기
-    private fun updateData(){
-
-        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
-        storageViewModel.getStorageLiveData.observe(viewLifecycleOwner){
-            Log.d("itData", it.toString())
-
-            // 데이터 업데이트
-            this.storageAdapter.submitList(ArrayList(it))
-            this.storageAdapter.notifyDataSetChanged()
-        }
-
-        val loadData = loadPrefsStorageItmes()
-        storageViewModel.getStorageImageList(arrayListOf(loadData))
-    }
 }

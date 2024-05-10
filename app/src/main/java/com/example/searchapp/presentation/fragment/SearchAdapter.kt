@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -66,23 +67,39 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                     .placeholder(R.drawable.base_photo_img)
                     .into(cardViewImg)
 
-                // 빈북마크 클릭시
-                cardViewBookmarkImg.setOnClickListener {
-
-                    if(currentItem!!.isLike == false){
-                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_full_img)
-                        currentItem!!.isLike = true     //클릭됐으니깐 true로 바꿔주기
-                    }else{
-                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
-                        currentItem!!.isLike = false
+                // cardViewBookmarkImg의 visibility는 currentItem!!.isLike = ture일때만 보이도록
+                // 즉 클릭했을때만 북마크 보이도록
+                cardViewBookmarkFullImg.visibility =
+                    if (currentItem!!.isLike) {
+                        View.VISIBLE
+                    } else {
+                        View.INVISIBLE
                     }
-                    Log.d("bookmark_click", currentItem!!.isLike.toString())
-                }
+
+//                // 빈북마크 클릭시
+//                cardViewBookmarkImg.setOnClickListener {
+//
+//                    if(currentItem!!.isLike == false){
+//                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_full_img)
+//                        currentItem!!.isLike = true     //클릭됐으니깐 true로 바꿔주기
+//                    }else{
+//                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
+//                        currentItem!!.isLike = false
+//                    }
+//                    Log.d("bookmark_click", currentItem!!.isLike.toString())
+//                }
+
 
             }
         }
     }
 
+
+    // 아이템 클리어해주는 함수
+    fun clearItem(){
+        searchList.clear()
+        notifyDataSetChanged()
+    }
 
 }
 
