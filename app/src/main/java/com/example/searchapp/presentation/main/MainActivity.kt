@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     // 좋아요가 눌린 아이템을 likedItems 리스트에 추가하는 함수
     fun addLikeItem(item : DocumentResponse){
-            likedItems.add(item)
+        likedItems.add(item)
     }
 
     // 좋아요가 눌린 아이템을 likedItems 리스트에서 삭제하는 함수

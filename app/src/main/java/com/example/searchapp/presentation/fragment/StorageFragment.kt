@@ -77,12 +77,11 @@ class StorageFragment : Fragment() {
 
     private fun adapterClick(position : Int){
 
-        Toast.makeText(requireContext(), "클릭함요", Toast.LENGTH_SHORT).show()
+        // postion이 이상,,,
         Log.d("positions", position.toString())
 
         storageAdapter.searchList.removeAt(position)
         storageAdapter.notifyItemRemoved(position)
-
     }
 
 }

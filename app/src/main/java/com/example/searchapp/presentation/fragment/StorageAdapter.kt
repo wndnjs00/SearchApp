@@ -32,11 +32,6 @@ class StorageAdapter(var searchList : ArrayList<DocumentResponse>, private val o
     override fun getItemCount(): Int = searchList.size
 
 
-    // 외부에서 어뎁터에 데이터 배열을 넣어줌
-    fun submitList(searchLists: ArrayList<DocumentResponse>){
-        this.searchList = searchLists
-    }
-
 
     class StorageViewHolder(private var binding : SearchItemBinding) : RecyclerView.ViewHolder(binding.root){
         private var currentItem : DocumentResponse?= null
