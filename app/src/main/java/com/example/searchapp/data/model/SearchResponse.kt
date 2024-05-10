@@ -21,5 +21,6 @@ data class DocumentResponse(
     @SerializedName("height") val height : Int,
     @SerializedName("image_url") val imageUrl : String,
     @SerializedName("thumbnail_url") val thumbnailUrl : String,
-    @SerializedName("width") val width : Int
+    @SerializedName("width") val width : Int,
+    var isLike : Boolean = false    // 좋아요 처리 (클릭O-> true, 클릭X -> false)
 )

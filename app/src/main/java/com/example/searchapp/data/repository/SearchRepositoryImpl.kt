@@ -1,5 +1,6 @@
 package com.example.searchapp.data.repository
 
+import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.data.remote.SearchRemoteDataSource
 import com.example.searchapp.presentation.repository.SearchRepository
 
@@ -11,6 +12,7 @@ class SearchRepositoryImpl : SearchRepository {
         size: Int,
         page: Int
     ): SearchRemoteDataSource {
-        return searchImages(query,sort = "recency",size = 80, page = 1)
+        return searchImages(query, sort, size, page)
     }
+
 }

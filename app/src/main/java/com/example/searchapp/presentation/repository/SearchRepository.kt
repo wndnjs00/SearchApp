@@ -1,5 +1,6 @@
 package com.example.searchapp.presentation.repository
 
+import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.data.remote.SearchRemoteDataSource
 
 interface SearchRepository {
@@ -9,4 +10,5 @@ interface SearchRepository {
         size : Int,
         page : Int
     ): SearchRemoteDataSource
+
 }
