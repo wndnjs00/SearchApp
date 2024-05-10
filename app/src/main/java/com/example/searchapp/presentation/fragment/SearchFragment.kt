@@ -48,7 +48,6 @@ class SearchFragment : Fragment() {
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -65,6 +64,7 @@ class SearchFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun dataUpdate(){
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
