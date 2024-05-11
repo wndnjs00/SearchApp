@@ -54,7 +54,7 @@ class StorageFragment : Fragment() {
 
         setRecyclerView()
 
-        Log.d(TAG, "onViewCreated")     // viewpager 사용해가지고, 내보관함 클릭할때마다 onViewCreated가 호출이 되지 않는건지 질문
+        Log.d(TAG, "onViewCreated")     // viewpager 사용해가지고, 내보관함 클릭할때마다 onViewCreated가 호출이 되지 않는건지 질문!
 
         // MainActivity로부터 좋아요받은 항목을 가져옴
         likeItem = (activity as MainActivity).likedItems
