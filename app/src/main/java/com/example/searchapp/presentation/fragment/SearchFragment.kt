@@ -31,7 +31,7 @@ class SearchFragment : Fragment() {
     private val searchAdapter : SearchAdapter by lazy {
         SearchAdapter(searchList = ArrayList()){ search, position ->
             // 클릭 시
-            adapterClick(search,position)
+            adapterClick(search, position)
         }
     }
 
@@ -76,6 +76,7 @@ class SearchFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun searchBtn(){
 
         binding.searchBtn.setOnClickListener {
@@ -86,17 +87,19 @@ class SearchFragment : Fragment() {
             if (searchText.isNotEmpty()) {
                 // viewModel에 작성한 텍스트값 전달
                 searchViewModel.getSearchImageList(searchText)
+            }else{
+                Toast.makeText(requireContext(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
 
         // ViewModel을 observe해서 실시간 변경되는 데이터관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("it_data", it.toString())         // 전체 데이터
+            Log.d("it_data", it.toString())         // 전체 데이터 (검색버튼 눌렀을때 가져오는 전체데이터)
 
             // 데이터 업데이트
             searchAdapter.clearItem()   // 업데이트 하기전에 클리어 먼저해주자
-            this.searchAdapter.submitList(it as ArrayList)
-            this.searchAdapter.notifyDataSetChanged()
+            searchAdapter.submitList(it as ArrayList)   // 이 전체데이터를(it) submitList에 넣어주가
+            searchAdapter.notifyDataSetChanged()
         }
 
     }
@@ -150,10 +153,10 @@ class SearchFragment : Fragment() {
         item.isLike = !item.isLike
 
         if (item.isLike){
-            // MainActivity에 있는 클릭한 아이템 추가
+            // ture이면 MainActivity에 있는 클릭한 아이템 추가
             (activity as MainActivity).addLikeItem(item)
         }else{
-            // 한번 더 클릭된다면, 클릭한 아이템 삭제
+            // 한번 더 클릭된다면(false), 클릭한 아이템 삭제
             (activity as MainActivity).removeLikeItem(item)
         }
 
