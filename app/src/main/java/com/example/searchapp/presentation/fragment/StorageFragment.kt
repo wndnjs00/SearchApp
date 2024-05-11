@@ -21,6 +21,8 @@ import com.google.gson.reflect.TypeToken
 
 class StorageFragment : Fragment() {
 
+    val TAG = "Fragment_lifecycle_test"
+
     private var _binding : FragmentStorageBinding? = null
     private val binding get() = _binding!!
 
@@ -41,6 +43,7 @@ class StorageFragment : Fragment() {
     ): View? {
         _binding = FragmentStorageBinding.inflate(inflater,container,false)
 
+        Log.d(TAG, "onCreateView")
         return binding.root
     }
 
@@ -50,6 +53,8 @@ class StorageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
+
+        Log.d(TAG, "onViewCreated")     // viewpager 사용해가지고, 내보관함 클릭할때마다 onViewCreated가 호출이 되지 않는건지 질문
 
         // MainActivity로부터 좋아요받은 항목을 가져옴
         likeItem = (activity as MainActivity).likedItems
