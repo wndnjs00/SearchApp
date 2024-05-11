@@ -15,25 +15,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.databinding.FragmentStorageBinding
 import com.example.searchapp.presentation.main.MainActivity
-import com.example.searchapp.presentation.viewmodel.StorageViewModel
-import com.example.searchapp.presentation.viewmodel.StorageViewModelFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
 class StorageFragment : Fragment() {
+
     private var _binding : FragmentStorageBinding? = null
     private val binding get() = _binding!!
 
     private val storageAdapter : StorageAdapter by lazy {
-        StorageAdapter(searchList = ArrayList()){ search, position ->
+        StorageAdapter(storageList = ArrayList()){ search, position ->
             adapterClick(position)
         }
     }
 
 
     // 사용자의 좋아요를 받은 항목을 저장하는 빈리스트
-    private var likeItem : List<DocumentResponse> = listOf()
+    private var likeItem : ArrayList<DocumentResponse> = ArrayList()
 
 
     override fun onCreateView(
@@ -41,6 +40,7 @@ class StorageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentStorageBinding.inflate(inflater,container,false)
+
         return binding.root
     }
 
@@ -78,10 +78,11 @@ class StorageFragment : Fragment() {
     private fun adapterClick(position : Int){
 
         // postion이 이상,,,
-        Log.d("positions", position.toString())
+        Log.d("position", position.toString())
 
-        storageAdapter.searchList.removeAt(position)
+        storageAdapter.storageList.removeAt(position)
         storageAdapter.notifyItemRemoved(position)
+
     }
 
 }

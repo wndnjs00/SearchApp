@@ -45,12 +45,6 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
     override fun getItemCount(): Int = searchList.size
 
 
-    // 외부에서 어뎁터에 데이터 배열을 넣어줌
-    fun submitList(searchLists: ArrayList<DocumentResponse>){
-        this.searchList = searchLists
-    }
-
-
     class SearchViewHolder(private var binding : SearchItemBinding) : RecyclerView.ViewHolder(binding.root){
         private var currentItem : DocumentResponse?= null
 
@@ -67,8 +61,8 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                     .placeholder(R.drawable.base_photo_img)
                     .into(cardViewImg)
 
-                // cardViewBookmarkImg의 visibility는 currentItem!!.isLike = ture일때만 보이도록
-                // 즉 클릭했을때만 북마크 보이도록
+                // cardViewBookmarkFullImg의 visibility는 currentItem!!.isLike = ture일때만 보이도록
+                // 즉, 클릭했을때만 색칠한 북마크 보이도록
                 cardViewBookmarkFullImg.visibility =
                     if (currentItem!!.isLike) {
                         View.VISIBLE
@@ -76,29 +70,20 @@ class SearchAdapter(var searchList : ArrayList<DocumentResponse>, private val on
                         View.INVISIBLE
                     }
 
-//                // 빈북마크 클릭시
-//                cardViewBookmarkImg.setOnClickListener {
-//
-//                    if(currentItem!!.isLike == false){
-//                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_full_img)
-//                        currentItem!!.isLike = true     //클릭됐으니깐 true로 바꿔주기
-//                    }else{
-//                        cardViewBookmarkImg.setImageResource(R.drawable.bookmark_img)
-//                        currentItem!!.isLike = false
-//                    }
-//                    Log.d("bookmark_click", currentItem!!.isLike.toString())
-//                }
-
 
             }
         }
     }
 
 
+    // 외부에서 어뎁터에 데이터 배열을 넣어줌
+    fun submitList(searchLists : ArrayList<DocumentResponse>){
+        searchList = searchLists
+    }
+
     // 아이템 클리어해주는 함수
     fun clearItem(){
         searchList.clear()
-        notifyDataSetChanged()
     }
 
 }
