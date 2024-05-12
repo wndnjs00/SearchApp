@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // BottomNavigation 표현함수
     private fun initBottomNavigation() {
 
         supportFragmentManager.beginTransaction()
