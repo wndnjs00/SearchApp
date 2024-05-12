@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.searchapp.data.model.DocumentResponse
@@ -21,7 +22,7 @@ class StorageFragment : Fragment() {
 
     private val storageAdapter : StorageAdapter by lazy {
         StorageAdapter(storageList = ArrayList()){ search, position ->
-            adapterClick(position)
+            adapterClick(search,position)
         }
     }
 
@@ -79,10 +80,15 @@ class StorageFragment : Fragment() {
 
 
     // 아이템 클릭시
-    private fun adapterClick(position : Int){
+    private fun adapterClick(documentResponse: DocumentResponse,position : Int){
 
-        // postion이 이상,,,
+
         Log.d("position", position.toString())
+        Toast.makeText(requireContext(), "클릭 $position", Toast.LENGTH_SHORT).show()
+
+        // 클릭한 아이템 삭제
+        storageViewModel.deleteItem(context, documentResponse, position)
+
 
     }
 

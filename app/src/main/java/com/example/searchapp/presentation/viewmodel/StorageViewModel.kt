@@ -21,6 +21,22 @@ class StorageViewModel(private val remoteDataSource: SearchRemoteDataSource) : V
     }
 
 
+    // 북마크에 있는 아이템 클릭하면 삭제되도록 하기위한 함수
+    fun deleteItem(context: Context?, item : DocumentResponse, position : Int){
+
+        // SharedPreferences를 사용해서 아이템 삭제
+        SharedPreferences.deletePrefItem(context, item)
+
+        // 삭제된 아이템 정보를 반영하여 LiveData 업데이트
+        _getStorageImageLiveData.value?.let {
+            val updateItems = it.toMutableList()
+            updateItems.remove(item)
+            _getStorageImageLiveData.value = updateItems
+        }
+    }
+
+
+
     class StorageViewModelFactory : ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
