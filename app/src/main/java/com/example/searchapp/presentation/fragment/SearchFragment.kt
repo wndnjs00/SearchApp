@@ -2,7 +2,6 @@ package com.example.searchapp.presentation.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,14 +12,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.searchapp.R
+import com.example.searchapp.data.SharedPreferences
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.presentation.viewmodel.SearchViewModel
 import com.example.searchapp.presentation.viewmodel.SearchViewModelFactory
 import com.example.searchapp.databinding.FragmentSearchBinding
-import com.example.searchapp.presentation.main.MainActivity
-import com.google.gson.Gson
-import okhttp3.internal.notify
 
 
 class SearchFragment : Fragment() {
@@ -87,18 +83,28 @@ class SearchFragment : Fragment() {
             if (searchText.isNotEmpty()) {
                 // viewModel에 작성한 텍스트값 전달
                 searchViewModel.getSearchImageList(searchText)
+//                searchViewModel.getSearchVideoList(searchText)
             }else{
                 Toast.makeText(requireContext(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // ViewModel을 observe해서 실시간 변경되는 데이터관찰
+        // ViewModel을 observe해서 실시간 변경되는 데이터(검색어)관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
-            Log.d("it_data", it.toString())         // 전체 데이터 (검색버튼 눌렀을때 가져오는 전체데이터)
+            Log.d("it_imageData", it.toString())         // 전체 데이터 (검색버튼 눌렀을때 가져오는 전체데이터)
 
             // 데이터 업데이트
-            searchAdapter.clearItem()   // 업데이트 하기전에 클리어 먼저해주자
-            searchAdapter.submitList(it as ArrayList)   // 이 전체데이터를(it) submitList에 넣어주가
+            searchAdapter.clearItem()                   // 업데이트 하기전에 클리어 먼저해주자
+            searchAdapter.submitImageList(it as ArrayList)   // 이 전체데이터를(it) submitList에 넣어주기
+            searchAdapter.notifyDataSetChanged()
+        }
+
+
+        searchViewModel.getSearchVideoLiveData.observe(viewLifecycleOwner){
+
+            Log.d("it_VideoData", it.toString())
+            searchAdapter.clearItem()
+            searchAdapter.submitVideoList(it as ArrayList)
             searchAdapter.notifyDataSetChanged()
         }
 
@@ -153,12 +159,17 @@ class SearchFragment : Fragment() {
         item.isLike = !item.isLike
 
         if (item.isLike){
-            // ture이면 MainActivity에 있는 클릭한 아이템 추가
-            (activity as MainActivity).addLikeItem(item)
+            // ture이면 SharedPreferences를 통해 클릭한 아이템 추가
+            SharedPreferences.addPrefItem(context, item)
+            item.isLike = true
+
         }else{
-            // 한번 더 클릭된다면(false), 클릭한 아이템 삭제
-            (activity as MainActivity).removeLikeItem(item)
+            // 한번 더 클릭된다면, 클릭한 아이템 삭제
+            SharedPreferences.deletePrefItem(context, item)
+            item.isLike = false
         }
+
+        Log.d("item.isLike", item.isLike.toString())
 
         // 아이템 업데이트
         searchAdapter.notifyItemChanged(position)

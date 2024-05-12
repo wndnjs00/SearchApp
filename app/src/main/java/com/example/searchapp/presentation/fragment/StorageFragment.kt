@@ -1,7 +1,5 @@
 package com.example.searchapp.presentation.fragment
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,30 +9,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.searchapp.data.model.DocumentResponse
 import com.example.searchapp.databinding.FragmentStorageBinding
-import com.example.searchapp.presentation.main.MainActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.searchapp.presentation.viewmodel.StorageViewModel
 
 
 class StorageFragment : Fragment() {
 
-    val TAG = "Fragment_lifecycle_test"
 
     private var _binding : FragmentStorageBinding? = null
     private val binding get() = _binding!!
 
     private val storageAdapter : StorageAdapter by lazy {
         StorageAdapter(storageList = ArrayList()){ search, position ->
-            adapterClick(position)
+            adapterClick(search,position)
         }
     }
 
-
-    // 사용자의 좋아요를 받은 항목을 저장하는 빈리스트
-    private var likeItem : ArrayList<DocumentResponse> = ArrayList()
+    private val storageViewModel by viewModels<StorageViewModel>{
+        StorageViewModel.StorageViewModelFactory()
+    }
 
 
     override fun onCreateView(
@@ -42,26 +36,17 @@ class StorageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentStorageBinding.inflate(inflater,container,false)
-
-        Log.d(TAG, "onCreateView")
         return binding.root
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
+        viewModel()
 
-        Log.d(TAG, "onViewCreated")     // viewpager 사용해가지고, 내보관함 클릭할때마다 onViewCreated가 호출이 되지 않는건지 질문!
-
-        // MainActivity로부터 좋아요받은 항목을 가져옴
-        likeItem = (activity as MainActivity).likedItems
-        Log.d("likeItems" , likeItem.size.toString())   // 잘 가져옴
-
-        // 좋아요 받은 아이템 넣어서 업데이트
-        storageAdapter.updateData(likeItem)
     }
 
     override fun onDestroyView() {
@@ -79,14 +64,31 @@ class StorageFragment : Fragment() {
         }
     }
 
+    private fun viewModel(){
 
-    private fun adapterClick(position : Int){
+        // BookmarkFragment가 호출될때, 북마크된 아이템을 가져옴
+        storageViewModel.getBookmarkedItems(context)
 
-        // postion이 이상,,,
+        // ViewModel을 observe해서 실시간 변경되는 데이터(북마크한 아이템 리스트)관찰
+        storageViewModel.getStorageImageLiveData.observe(viewLifecycleOwner){
+
+            storageAdapter.clearItem()
+            storageAdapter.storageList = it as ArrayList<DocumentResponse>
+            storageAdapter.notifyDataSetChanged()
+        }
+    }
+
+
+    // 아이템 클릭시
+    private fun adapterClick(documentResponse: DocumentResponse,position : Int){
+
+
         Log.d("position", position.toString())
+        Toast.makeText(requireContext(), "클릭 $position", Toast.LENGTH_SHORT).show()
 
-        storageAdapter.storageList.removeAt(position)
-        storageAdapter.notifyItemRemoved(position)
+        // 클릭한 아이템 삭제
+        storageViewModel.deleteItem(context, documentResponse, position)
+
 
     }
 
