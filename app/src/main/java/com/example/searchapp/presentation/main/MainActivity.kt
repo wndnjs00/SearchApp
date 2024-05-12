@@ -22,24 +22,37 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewPager()
+        initBottomNavigation()
 
         setContentView(binding.root)
     }
 
 
-    private fun viewPager() {
-        val fragmentList = ArrayList<Fragment>().apply {
-            add(SearchFragment())
-            add(StorageFragment())
-        }
-        binding.viewPager.adapter = ViewPagerAdapter(fragmentList, this)
+    private fun initBottomNavigation() {
 
-        // tabLayout
-        val tabTitle = listOf(getString(R.string.tablayout_search), getString(R.string.tablayout_storage))
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = tabTitle[position]
-        }.attach()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_, SearchFragment())
+            .commitAllowingStateLoss()
+
+        binding.bn.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+
+                R.id.search -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_, SearchFragment())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.storage -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_,StorageFragment())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
+                }
+            }
+            false
+        }
+
     }
 
 
