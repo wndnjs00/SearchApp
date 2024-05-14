@@ -27,29 +27,30 @@ class MainActivity : AppCompatActivity() {
     // BottomNavigation 표현함수
     private fun initBottomNavigation() {
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_, SearchFragment())
-            .commitAllowingStateLoss()
+        setFragment(SearchFragment())
 
         binding.bn.setOnItemSelectedListener { item ->
             when (item.itemId) {
 
                 R.id.search -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_, SearchFragment())
-                        .commitAllowingStateLoss()
+                    setFragment(SearchFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.storage -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_,StorageFragment())
-                        .commitAllowingStateLoss()
+                    setFragment(StorageFragment())
                     return@setOnItemSelectedListener true
                 }
             }
             false
         }
 
+    }
+
+
+    private fun setFragment(fragment : Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_, fragment)
+            .commit()
     }
 
 

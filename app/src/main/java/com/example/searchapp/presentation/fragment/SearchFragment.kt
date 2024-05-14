@@ -100,13 +100,13 @@ class SearchFragment : Fragment() {
         }
 
 
-        searchViewModel.getSearchVideoLiveData.observe(viewLifecycleOwner){
-
-            Log.d("it_VideoData", it.toString())
-            searchAdapter.clearItem()
-            searchAdapter.submitVideoList(it as ArrayList)
-            searchAdapter.notifyDataSetChanged()
-        }
+//        searchViewModel.getSearchVideoLiveData.observe(viewLifecycleOwner){
+//
+//            Log.d("it_VideoData", it.toString())
+//            searchAdapter.clearItem()
+//            searchAdapter.submitVideoList(it as ArrayList)
+//            searchAdapter.notifyDataSetChanged()
+//        }
 
     }
 

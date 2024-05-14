@@ -88,8 +88,6 @@ class StorageFragment : Fragment() {
 
         // 클릭한 아이템 삭제
         storageViewModel.deleteItem(context, documentResponse, position)
-
-
     }
 
 }
