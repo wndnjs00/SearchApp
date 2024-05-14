@@ -15,8 +15,7 @@ data class MyEntity (
     val docUrl : String,
     val height : Int,
     val imageUrl : String,
-    @PrimaryKey @ColumnInfo(name = "thumbnail_url")
-    val thumbnailUrl : String,
+    @PrimaryKey @ColumnInfo(name = "thumbnail_url") val thumbnailUrl : String,
     val width : Int,
     var isLike : Boolean = false    // 좋아요 처리 (클릭O-> true, 클릭X -> false)
 )
