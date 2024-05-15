@@ -89,6 +89,7 @@ class SearchFragment : Fragment() {
             }
         }
 
+        // 데이터가 변경될때마다 호출이 될것임
         // ViewModel을 observe해서 실시간 변경되는 데이터(검색어)관찰
         searchViewModel.getSearchImageLiveData.observe(viewLifecycleOwner){
             Log.d("it_imageData", it.toString())         // 전체 데이터 (검색버튼 눌렀을때 가져오는 전체데이터)
