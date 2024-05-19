@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(private val remoteDataSource: SearchRemoteDataSource) : ViewModel() {
 
-    // 이미지 검색
     private val _getSearchImageLiveData : MutableLiveData<List<DocumentResponse>> = MutableLiveData()
     val getSearchImageLiveData : LiveData<List<DocumentResponse>> get() = _getSearchImageLiveData
 
@@ -23,13 +22,13 @@ class SearchViewModel(private val remoteDataSource: SearchRemoteDataSource) : Vi
     }
 
 
-    // 비디오 검색
-    private val _getSearchVideoLiveData : MutableLiveData<List<VideoDocumentResponse>> = MutableLiveData()
-    val getSearchVideoLiveData : LiveData<List<VideoDocumentResponse>> get() = _getSearchVideoLiveData
-
-    fun getSearchVideoList(query: String) = viewModelScope.launch {
-        _getSearchVideoLiveData.value = remoteDataSource.getVideo(query).videoDocuments
-    }
+//    // 비디오 검색
+//    private val _getSearchVideoLiveData : MutableLiveData<List<VideoDocumentResponse>> = MutableLiveData()
+//    val getSearchVideoLiveData : LiveData<List<VideoDocumentResponse>> get() = _getSearchVideoLiveData
+//
+//    fun getSearchVideoList(query: String) = viewModelScope.launch {
+//        _getSearchVideoLiveData.value = remoteDataSource.getVideo(query).videoDocuments
+//    }
 
 }
 
